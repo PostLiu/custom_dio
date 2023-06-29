@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'custom_dio_options.dart';
-import 'custom_dio_exception.dart';
 import 'package:path/path.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+import 'custom_dio_exception.dart';
+import 'custom_dio_options.dart';
 
 CustomDioOptions? options;
 
@@ -20,9 +22,11 @@ class CustomDio {
     _dio.options.validateStatus = (_) => true;
     _dio.options.followRedirects = options!.followRedirects;
     _dio.options.headers = options!.headers;
-    _dio.options.sendTimeout = options!.sendTimeout;
-    _dio.options.receiveTimeout = options!.receiveTimeout;
-    _dio.options.connectTimeout = options!.connectTimeout;
+    _dio.options.sendTimeout = Duration(milliseconds: options!.sendTimeout);
+    _dio.options.receiveTimeout =
+        Duration(milliseconds: options!.receiveTimeout);
+    _dio.options.connectTimeout =
+        Duration(milliseconds: options!.connectTimeout);
     _dio.interceptors.addAll(options!.interceptorsList);
     if (!options!.isProductionMode) {
       if (options!.logAllData || enableLog) {
@@ -122,11 +126,11 @@ class CustomDio {
       CancelToken? cancelToken}) async {
     final mapOfData = <String, dynamic>{};
     for (final file in filesModel) {
-      final _file = File(file.filePath);
-      final fileName = basename(_file.path);
+      final newFile = File(file.filePath);
+      final fileName = basename(newFile.path);
       mapOfData.addAll({
         file.fileFiledName: await MultipartFile.fromFile(
-          _file.path,
+          newFile.path,
           filename: fileName,
         ),
       });
@@ -155,8 +159,8 @@ class CustomDio {
       String? saveDirPath}) async {
     late Response res;
 
-    final _body = {}..addAll(body);
-    final _query = {}..addAll(query);
+    final body0 = {}..addAll(body);
+    final query0 = {}..addAll(query);
 
     try {
       switch (reqMethod.toUpperCase()) {
@@ -164,45 +168,45 @@ class CustomDio {
           res = await _dio.get(
             path,
             cancelToken: cancelToken,
-            queryParameters: _query.cast(),
+            queryParameters: query0.cast(),
           );
           break;
         case 'POST':
           res = await _dio.post(
             path,
-            data: _body.cast(),
+            data: body0.cast(),
             onReceiveProgress: onReceiveProgress,
             onSendProgress: onSendProgress,
             cancelToken: cancelToken,
-            queryParameters: _query.cast(),
+            queryParameters: query0.cast(),
           );
           break;
         case 'PUT':
           res = await _dio.put(
             path,
-            data: _body.cast(),
+            data: body0.cast(),
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             cancelToken: cancelToken,
-            queryParameters: _query.cast(),
+            queryParameters: query0.cast(),
           );
           break;
         case 'PATCH':
           res = await _dio.patch(
             path,
-            data: _body.cast(),
+            data: body0.cast(),
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             cancelToken: cancelToken,
-            queryParameters: _query.cast(),
+            queryParameters: query0.cast(),
           );
           break;
         case 'DELETE':
           res = await _dio.delete(
             path,
-            data: _body.cast(),
+            data: body0.cast(),
             cancelToken: cancelToken,
-            queryParameters: _query.cast(),
+            queryParameters: query0.cast(),
           );
           break;
 
@@ -212,7 +216,7 @@ class CustomDio {
             saveDirPath,
             cancelToken: cancelToken,
             onReceiveProgress: onReceiveProgress,
-            queryParameters: _query.cast(),
+            queryParameters: query0.cast(),
           );
 
           break;
@@ -223,11 +227,11 @@ class CustomDio {
       _throwIfNoSuccess(res);
 
       return res;
-    } on DioError catch (err) {
-      if (err.type == DioErrorType.other ||
-          err.type == DioErrorType.connectTimeout ||
-          err.type == DioErrorType.receiveTimeout ||
-          err.type == DioErrorType.sendTimeout) {
+    } on DioException catch (err) {
+      if (err.type == DioExceptionType.unknown ||
+          err.type == DioExceptionType.connectionTimeout ||
+          err.type == DioExceptionType.receiveTimeout ||
+          err.type == DioExceptionType.sendTimeout) {
         throw CustomDioException(
             "Bad Network Or Server Not available now", 5000);
       }

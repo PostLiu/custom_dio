@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:custom_dio/custom_dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,32 +25,34 @@ class _TestPageState extends State<TestPage> {
               const SizedBox(
                 height: 20,
               ),
-              TextButton(onPressed: getAll, child: Text("getAll")),
-              const  SizedBox(
+              TextButton(onPressed: getAll, child: const Text("getAll")),
+              const SizedBox(
                 height: 20,
               ),
-              TextButton(onPressed: post, child: Text("post")),
-              const   SizedBox(
+              TextButton(onPressed: post, child: const Text("post")),
+              const SizedBox(
                 height: 20,
               ),
-              TextButton(onPressed: getOne, child: Text("getOne")),
-              const   SizedBox(
+              TextButton(onPressed: getOne, child: const Text("getOne")),
+              const SizedBox(
                 height: 20,
               ),
-              TextButton(onPressed: getByFilter, child: Text("getByFilter")),
-              const  SizedBox(
+              TextButton(
+                  onPressed: getByFilter, child: const Text("getByFilter")),
+              const SizedBox(
                 height: 20,
               ),
-              TextButton(onPressed: delete, child: Text("delete")),
-              const  SizedBox(
+              TextButton(onPressed: delete, child: const Text("delete")),
+              const SizedBox(
                 height: 20,
               ),
-              TextButton(onPressed: update, child: Text("update")),
-              const  SizedBox(
+              TextButton(onPressed: update, child: const Text("update")),
+              const SizedBox(
                 height: 20,
               ),
-              TextButton(onPressed: uploadFile, child: Text("Upload File")),
-              const  SizedBox(
+              TextButton(
+                  onPressed: uploadFile, child: const Text("Upload File")),
+              const SizedBox(
                 height: 20,
               ),
             ],
@@ -84,7 +86,7 @@ class _TestPageState extends State<TestPage> {
   Future getOne() async {
     try {
       final data =
-      await CustomDio().send(reqMethod: "get", path: "dio-test/154");
+          await CustomDio().send(reqMethod: "get", path: "dio-test/154");
       dLog(data.data.toString());
     } catch (err) {
       dErrorLog(err.toString());
@@ -94,7 +96,7 @@ class _TestPageState extends State<TestPage> {
   Future delete() async {
     try {
       final data =
-      await CustomDio().send(reqMethod: "delete", path: "dio-test/1");
+          await CustomDio().send(reqMethod: "delete", path: "dio-test/1");
       dLog(data.data.toString());
     } catch (err) {
       dErrorLog(err.toString());
@@ -128,10 +130,10 @@ class _TestPageState extends State<TestPage> {
   Future uploadFile() async {
     try {
       final picker = ImagePicker();
-      final img = await picker.getImage(source: ImageSource.gallery);
+      final img = await picker.pickImage(source: ImageSource.gallery);
       if (img != null) {
-        final data = await CustomDio()
-            .uploadFiles(path: "dio-test/file", filesModel: [
+        final data =
+            await CustomDio().uploadFiles(path: "dio-test/file", filesModel: [
           DioUploadFileModel(filePath: img.path, fileFiledName: "file"),
           DioUploadFileModel(filePath: img.path, fileFiledName: "file"),
         ], body: [
@@ -181,17 +183,18 @@ class _TestPageState extends State<TestPage> {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text(
+          title: const Text(
             "Info",
             style: TextStyle(fontSize: 30),
           ),
           content: Text(
             data,
-            style: TextStyle(fontSize: 25),
+            style: const TextStyle(fontSize: 25),
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(context), child: Text("OK"))
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"))
           ],
         );
       },
@@ -203,17 +206,18 @@ class _TestPageState extends State<TestPage> {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text(
+          title: const Text(
             "Error",
             style: TextStyle(fontSize: 30),
           ),
           content: Text(
             data,
-            style: TextStyle(fontSize: 25),
+            style: const TextStyle(fontSize: 25),
           ),
           actions: [
             TextButton(
-                onPressed: () => Navigator.pop(context), child: Text("OK"))
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"))
           ],
         );
       },

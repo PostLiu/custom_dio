@@ -1,23 +1,23 @@
 name: custom_dio
 description: custom_dio is wrapper above dio package to make send request easy
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/hatemragab/custom_dio
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  dio: ^4.0.4
-  path: ^1.8.0
-  pretty_dio_logger: ^1.2.0-beta-1
+  dio: 5.2.1+1
+  path: 1.8.3
+  pretty_dio_logger: 1.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.4
+  flutter_lints: 2.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
